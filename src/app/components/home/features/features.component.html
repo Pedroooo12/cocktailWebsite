@@ -1,0 +1,15 @@
+<section>
+  <div class="py-8 px-4 mx-auto max-w-screen-xl md:py-16 md:px-12 lg:py-32">
+      <div class="max-w-screen-md mb-8 lg:mb-16">
+          <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-custom-violet">¿Qué puedes hacer dentro de la web?</h2>
+          <p class="text-custom-black sm:text-xl">Aquí tienes la explicación de cada una de las páginas a las que puedes acceder. <br> ¡Disfruta de tu cocktail!</p>
+      </div>
+      <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
+        @for (card of listCards; track $index) {
+          <div>
+            <app-card [cardFeature]="card"></app-card>
+          </div>
+        }
+      </div>
+  </div>
+</section>
