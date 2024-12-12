@@ -1,8 +1,10 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +15,8 @@ export const appConfig: ApplicationConfig = {
         skipInitialTransition: true
       }),
      ),
+     importProvidersFrom(NgxSpinnerModule.forRoot(/*config*/)),
+      provideAnimations(),
      provideHttpClient()
-     
-  ]
+  ],
 };

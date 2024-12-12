@@ -1,0 +1,28 @@
+
+<h2 class="text-2xl font-semibold w-fit mb-2">Instrucciones</h2>
+@if (accordionList.length>0) {
+  <div data-test="accordeon-div" class="flex flex-col gap-5">
+    @for (accordion of accordionList; track $index) {
+      <div class="w-full max-w-5xl" id="accordion-collapse" data-accordion="collapse">
+        <h2>
+          <button (click)="toggle($index)" type="button" class="transition-all w-full  duration-300 flex items-center justify-between p-5 font-medium rtl:text-right border focus:ring-1  focus:ring-custom-violet border-custom-violet text-black hover:text-white hover:bg-custom-violet gap-3" >
+            <span>
+              {{accordion.title}}
+            </span>
+            <svg data-accordion-icon class="w-3 h-3 shrink-0 rotate-180" [class.rotate-180]="isOpen($index)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+            </svg>
+          </button>
+        </h2>
+        <div [attr.data-testid]="'accordion-collapse-body-' + $index" [id]="'accordion-collapse-body-' + $index" [class.hidden]="!isOpen($index)" class="p-5 bg-custom-violet text-white mt-1 w-full">
+            <p>
+              {{accordion.description}}
+            </p>
+            
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <p>No hay instrucciones.</p>
+}
