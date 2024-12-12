@@ -15,6 +15,15 @@ export const routes: Routes = [
         title: 'Aleatorio',
         path: 'aleatorio',
         loadComponent: () => import('./api/pages/random/random.component').then(m => m.RandomComponent)
+      },
+      {
+        title: 'Alcohol',
+        path: 'alcohol',
+        loadComponent: () => import('./api/pages/alcohol/alcohol.component').then(m => m.AlcoholComponent)
+      },
+      {
+        path: 'bebida',
+        loadComponent: () => import('./api/pages/drink/drink.component').then(m => m.DrinkComponent)
       }
     ]
   },

@@ -1,0 +1,13 @@
+<section class="mx-auto py-6 container mt-5 px-4">
+  <ngx-spinner type="ball-scale-multiple" 
+    bdColor="rgba(0,0,0,0)">
+    <app-spinner></app-spinner>
+  </ngx-spinner>
+  <app-btn-back></app-btn-back>
+
+  @defer(when this.arrivedDrink) {
+    <app-drink-details [noTitle]="true" [drink]="drink"></app-drink-details>
+  }
+
+</section>
+

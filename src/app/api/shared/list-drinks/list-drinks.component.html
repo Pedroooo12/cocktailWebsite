@@ -1,0 +1,10 @@
+@if (this.displayedDrinks.length > 0) {
+  <div data-test="divListDrinks" class="flex flex-col md:flex-row md:flex-wrap gap-5 justify-center mt-5 xl:h-1/5">
+    @for (drink of displayedDrinks; track $index) {
+      <div>
+        <app-drink-item (click)="redirectDrink(drink.idDrink)" [alcohol]="drink"></app-drink-item>
+      </div>
+    }
+    <app-btn-top></app-btn-top>
+  </div> 
+}

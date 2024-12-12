@@ -1,0 +1,18 @@
+<section class="mx-auto py-6 container mt-5 px-4">
+  <app-alert [alertInfo]="arrivedDrinkMessage"></app-alert>
+  <app-alert [alertInfo]="changedDrinkMessage"></app-alert>
+  <ngx-spinner type="ball-scale-multiple"
+              bdColor="rgba(0,0,0,0)">
+    <app-spinner></app-spinner>
+  </ngx-spinner>
+  @if (listCategoriesComputed().length > 0) {
+    <div data-test="divCategories" class="flex flex-col md:flex-row gap-5 justify-center">
+      @for (category of listCategoriesComputed(); track $index) {
+        <div (click)="actionButton(category.strAlcoholic)" [attr.data-testid]="category.strAlcoholic" [id]="category.strAlcoholic" class="p-4 text-center border categories border-custom-violet hover:text-white text-custom-violet hover:bg-custom-violet transition-all duration-300 rounded-md cursor-pointer">
+          {{category.strAlcoholic}}
+        </div> 
+      }
+    </div>
+  }
+ <app-list-drinks [listDrinks]="listDrinksComputed()"></app-list-drinks>
+</section> 
