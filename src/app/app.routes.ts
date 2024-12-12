@@ -29,6 +29,11 @@ export const routes: Routes = [
         title: "Tipo vaso",
         path: 'tipo-vaso',
         loadComponent: () => import('./api/pages/glass/glass.component').then(m => m.GlassComponent)
+      },
+      {
+        title: "Ingredientes",
+        path: 'ingredientes',
+        loadComponent: () => import('./api/pages/ingredient/ingredient.component').then(m => m.IngredientComponent)
       }
     ]
   },
