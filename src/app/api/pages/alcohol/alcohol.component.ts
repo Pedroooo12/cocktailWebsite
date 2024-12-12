@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 import { AlcoholCategory } from '@interfaces/alcohol/alcoholCategory';
 import { AlertInfo } from '@interfaces/alertInfo';
@@ -21,7 +21,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
   templateUrl: './alcohol.component.html',
   styleUrl: './alcohol.component.css'
 })
-export class AlcoholComponent {
+export class AlcoholComponent implements OnDestroy {
 
   #alertService = inject(AlertService);
   #apiService = inject(ApiService);
@@ -36,6 +36,11 @@ export class AlcoholComponent {
   listDrinksComputed = computed(() => this.#listDrinks())
   
   #alertMessage: string = '';
+
+  #alertEffect = effect(() => {
+    this.#alertMessage = this.#alertService.getAlert()();
+    this.checkAlertMessage(this.#alertMessage);
+  });
  
   //boolean
   firstTime: boolean = false;
@@ -56,10 +61,12 @@ export class AlcoholComponent {
 
   constructor(){
     this.handleListCategories();
-    effect(() => {
-      this.#alertMessage = this.#alertService.getAlert()();
-      this.checkAlertMessage(this.#alertMessage);
-    });
+  }
+
+  ngOnDestroy(): void {
+    this.#paginationService.reset();
+    this.#alertService.reset();
+    this.#alertEffect.destroy();
   }
 
   handleListCategories(){

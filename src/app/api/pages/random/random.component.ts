@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy, OnInit, Signal, signal } from '@angular/core';
 import { AlertInfo } from '@interfaces/alertInfo';
 import { Drink } from '@interfaces/drink';
 import { AlertComponent } from '../../shared/alert/alert.component';
@@ -21,7 +21,7 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './random.component.html',
   styleUrl: './random.component.css'
 })
-export class RandomComponent{
+export class RandomComponent implements OnDestroy{
 
   #alertService = inject(AlertService);
   #apiService = inject(ApiService);
@@ -31,6 +31,11 @@ export class RandomComponent{
   drinkComputed = computed(() => this.#drink())
 
   #alertMessage: string = '';
+
+  #alertEffect = effect(() => {
+    this.#alertMessage = this.#alertService.getAlert()();
+    this.checkAlertMessage(this.#alertMessage);
+  });
 
   arrivedDrinkAlert: boolean = false;
   arrivedDrinkMessage: AlertInfo = {
@@ -53,11 +58,9 @@ export class RandomComponent{
     type: "eliminado"
   }
 
-  constructor(){
-    effect(() => {
-      this.#alertMessage = this.#alertService.getAlert()();
-      this.checkAlertMessage(this.#alertMessage);
-    });
+  ngOnDestroy(): void {
+    this.#alertEffect.destroy();
+    this.#alertService.reset();
   }
 
   handleRandom(alertMessage: string){
@@ -67,7 +70,6 @@ export class RandomComponent{
         next: (response) => {
           this.#drink.set(response.drinks[0]);
           this.#alertService.setAlert(alertMessage);
-          console.log(this.drinkComputed());
           this.#spinner.hide();
         },
         error: (value) => {

@@ -20,6 +20,10 @@ export class AlertService {
     this.#information.set(information);
   }
 
+  reset(){
+    this.#information.set('');
+  }
+
   showAlertAndHide(setAlert: () => void): void {
     setAlert(); 
     setTimeout(() => {
