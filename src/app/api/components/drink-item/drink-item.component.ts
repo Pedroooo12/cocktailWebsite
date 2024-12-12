@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 
 @Component({
@@ -8,5 +8,5 @@ import { Alcohol } from '@interfaces/alcohol/alcohol';
   styleUrl: './drink-item.component.css'
 })
 export class DrinkItemComponent {
-  @Input({required: true}) alcohol!: Alcohol;
+  alcohol = input.required<Alcohol>();
 }

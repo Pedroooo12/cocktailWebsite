@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { Accordion } from '@interfaces/accordion';
 
 @Component({
@@ -8,7 +8,8 @@ import { Accordion } from '@interfaces/accordion';
   styleUrl: './accordion.component.css'
 })
 export class AccordionComponent {
-  @Input({required: true}) accordionList!: Accordion[];
+  accordionList = input.required<Accordion[]>();
+  
   openIndexes: Set<number> = new Set();
 
   toggle(index: number){

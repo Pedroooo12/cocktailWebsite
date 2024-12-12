@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="w-auto p-2">
-          <p class="text-xs  font-medium">{{otherInformation.strTags}}</p>
+          <p class="text-xs  font-medium">{{otherInformation().strTags}}</p>
         </div>
       </div>
     </div>
@@ -49,10 +49,10 @@
           </div>
         </div>
         <div class="w-auto p-2">
-          @if (otherInformation.strVideo == 'No disponible') {
-            <p class="text-xs  font-medium">{{otherInformation.strVideo}}</p>  
+          @if (otherInformation().strVideo == 'No disponible') {
+            <p class="text-xs  font-medium">{{otherInformation().strVideo}}</p>  
           } @else {
-            <a [href]="otherInformation.strVideo" target="_blank" class="text-xs  font-medium">Video</a> 
+            <a [href]="otherInformation().strVideo" target="_blank" class="text-xs  font-medium">Video</a> 
           }
         </div>
       </div>
@@ -78,10 +78,10 @@
           </div>
         </div>
         <div class="w-auto p-2">
-          @if (otherInformation.strImageSource == 'No disponible') {
-            <p class="text-xs  font-medium">{{otherInformation.strImageSource}}</p>   
+          @if (otherInformation().strImageSource == 'No disponible') {
+            <p class="text-xs  font-medium">{{otherInformation().strImageSource}}</p>   
           } @else {
-            <a [href]="otherInformation.strImageSource" class="text-xs  font-medium">{{otherInformation.strImageSource}}</a> 
+            <a [href]="otherInformation().strImageSource" class="text-xs  font-medium">{{otherInformation().strImageSource}}</a> 
           }
 
         </div>
@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="w-auto p-2">
-          <p class="text-xs  font-medium">{{otherInformation.strImageAttribution}}</p>
+          <p class="text-xs  font-medium">{{otherInformation().strImageAttribution}}</p>
         </div>
       </div>
     </div>
@@ -135,7 +135,7 @@
           </div>
         </div>
         <div class="w-auto p-2">
-          <p class="text-xs  font-medium">{{otherInformation.strCreativeCommonsConfirmed}}</p>
+          <p class="text-xs  font-medium">{{otherInformation().strCreativeCommonsConfirmed}}</p>
         </div>
       </div>
     </div>
@@ -162,7 +162,7 @@
           </div>
         </div>
         <div class="w-auto p-2">
-          <p class="text-xs  font-medium">{{otherInformation.dateModified}}</p>
+          <p class="text-xs  font-medium">{{otherInformation().dateModified}}</p>
         </div>
       </div>
     </div>

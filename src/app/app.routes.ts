@@ -24,6 +24,11 @@ export const routes: Routes = [
       {
         path: 'bebida',
         loadComponent: () => import('./api/pages/drink/drink.component').then(m => m.DrinkComponent)
+      },
+      {
+        title: "Tipo vaso",
+        path: 'tipo-vaso',
+        loadComponent: () => import('./api/pages/glass/glass.component').then(m => m.GlassComponent)
       }
     ]
   },

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, Input, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, Input, Renderer2 } from '@angular/core';
 import { CardFeature } from '../../../interfaces/CardFeature';
 
 @Component({
@@ -9,7 +9,8 @@ import { CardFeature } from '../../../interfaces/CardFeature';
   styleUrl: './card.component.css'
 })
 export class CardComponent implements AfterViewInit {
-  @Input({required: true}) cardFeature!: CardFeature;
+  cardFeature = input.required<CardFeature>();
+
   #el = inject(ElementRef);
   #renderer = inject(Renderer2);
 
@@ -20,7 +21,7 @@ export class CardComponent implements AfterViewInit {
       const svgContainer = this.#el.nativeElement.querySelector('.flex.justify-center.items-center.mb-4');
  
       // Inserta el SVG directamente en el contenedor
-      this.#renderer.setProperty(svgContainer, 'innerHTML', this.cardFeature.svg);
+      this.#renderer.setProperty(svgContainer, 'innerHTML', this.cardFeature().svg);
     }
    }
 }

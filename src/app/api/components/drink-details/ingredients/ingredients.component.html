@@ -3,7 +3,7 @@
   <h2 class="text-lg md:text-2xl font-bold">Ingredientes y Medidas</h2>
   @if (ingredientList.length > 0) {
     <div data-test="ingredients-list" class="flex flex-col md:flex-row  md:justify-center gap-4 mt-5">
-      @for (ingredient of ingredientList; track $index) {
+      @for (ingredient of ingredientList(); track $index) {
         <div class="flex gap-2 items-center">
           <div class="bg-custom-violet text-white w-10 h-10 rounded-full flex justify-center items-center">{{$index+1}}</div>
           <div class="text-sm flex-1">

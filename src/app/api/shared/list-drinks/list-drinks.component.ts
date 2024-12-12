@@ -1,4 +1,4 @@
-import { Component, computed, effect, HostListener, inject, Input } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, input, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 import { PaginationService } from '../../services/pagination.service';
@@ -13,7 +13,7 @@ import { IdService } from '../../services/id.service';
   styleUrl: './list-drinks.component.css'
 })
 export class ListDrinksComponent {
-  @Input({required: true}) listDrinks!: Alcohol[];
+  listDrinks = input.required<Alcohol[]>();
 
   displayedDrinks: Alcohol[] = [];
 

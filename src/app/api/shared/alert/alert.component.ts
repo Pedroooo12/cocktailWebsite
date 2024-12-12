@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { AlertInfo } from '@interfaces/alertInfo';
 
 @Component({
@@ -11,10 +11,10 @@ import { AlertInfo } from '@interfaces/alertInfo';
 })
 export class AlertComponent {
 
-  @Input({required: true}) alertInfo!: AlertInfo;
+  alertInfo = input.required<AlertInfo>();
 
   getClass(){
-    switch (this.alertInfo!.type) {
+    switch (this.alertInfo().type) {
       case 'eliminado':
         return 'border-red-700  text-red-100 bg-red-600 hover:bg-red-800';
       case 'correcto':

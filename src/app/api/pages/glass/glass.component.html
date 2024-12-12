@@ -1,0 +1,17 @@
+<section class="mx-auto py-6 container mt-5 px-4">
+  @if (listGlassComputed().length > 0) {
+    <select data-test="select-glass" (change)="getValueFromSelect($event)" class="md:w-1/2 mx-auto py-3 px-4 pe-9 block w-full border border-custom-violet rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none">
+      <option selected="" class="text-custom-violet">Selecciona un tipo de vaso</option>
+      @for (glass of listGlassComputed(); track $index) {
+        <option [attr.data-testid]="glass.strGlass" class="text-custom-violet">{{glass.strGlass}}</option>
+      }
+    </select> 
+  }
+  <app-alert data-test="alert-drink-arrived-glass" [alertInfo]="arrivedDrinkMessage"></app-alert>
+  <app-alert data-test="alert-drink-changed-glass" [alertInfo]="changedDrinkMessage"></app-alert>
+  <app-list-drinks [listDrinks]="listDrinksComputed()"></app-list-drinks>
+  <ngx-spinner type="ball-scale-multiple"
+    bdColor="rgba(0,0,0,0)">
+  <app-spinner></app-spinner>
+  </ngx-spinner>
+</section>

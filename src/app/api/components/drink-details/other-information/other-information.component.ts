@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { OtherInformation } from '@interfaces/otherInformation';
 
 @Component({
@@ -8,5 +8,5 @@ import { OtherInformation } from '@interfaces/otherInformation';
   styleUrl: './other-information.component.css'
 })
 export class OtherInformationComponent {
-  @Input({required: true}) otherInformation!: OtherInformation;
+  otherInformation = input.required<OtherInformation>();
 }

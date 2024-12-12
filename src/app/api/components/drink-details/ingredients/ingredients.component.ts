@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { Ingredient } from '@interfaces/ingredient';
 
 @Component({
@@ -8,5 +8,5 @@ import { Ingredient } from '@interfaces/ingredient';
   styleUrl: './ingredients.component.css'
 })
 export class IngredientsComponent {
-  @Input({required: true}) ingredientList!: Ingredient[];
+  ingredientList = input.required<Ingredient[]>();
 }
