@@ -31,10 +31,6 @@ export class HeaderComponent {
       path: "/ingredientes"
     },
     {
-      title: "Categorías",
-      path: "/categorias"
-    },
-    {
       title: "Tipo de Vaso",
       path: "/tipo-vaso"
     },
