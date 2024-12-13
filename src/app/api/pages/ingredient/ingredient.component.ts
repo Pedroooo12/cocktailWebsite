@@ -61,7 +61,7 @@ export class IngredientComponent implements OnDestroy{
   };
 
   constructor(){
-    this.handleIngredient();
+    this.fecthListIngredients();
   }
 
 
@@ -71,7 +71,7 @@ export class IngredientComponent implements OnDestroy{
     this.#alertEffect.destroy();
   }
 
-  handleIngredient(){
+  fecthListIngredients(){
     this.#spinner.show();
     this.#apiService.getListIngredients().subscribe({
       next: (response) => {
@@ -84,7 +84,7 @@ export class IngredientComponent implements OnDestroy{
     })
   }
 
-  handleListDrinks(){
+  fecthListDrinks(){
     this.#spinner.show();
     if(this.selectedValue != ""){
       this.#apiService.getListDrinksByIngredient(this.selectedValue).subscribe(
@@ -109,14 +109,21 @@ export class IngredientComponent implements OnDestroy{
       this.firstTime = true;
       this.#alertService.setAlert("creado");
     }else{
+      this.#alertService.setAlert("");
       this.#alertService.setAlert("cambiado");
     }
   }
 
   getValueFromSelect(event: any){
     const selectElement = event.target as HTMLSelectElement; // Asegúrate de que el evento es del tipo correcto
-    this.selectedValue = selectElement.value; 
-    this.handleListDrinks();
+    this.selectedValue = selectElement.value;
+    if(this.#listDrinks().length > 0) this.resetDrinks(); 
+    this.fecthListDrinks();
+  }
+
+  resetDrinks(){
+    this.#paginationService.reset();
+    this.#listDrinks.set([]);
   }
 
   checkAlertMessage(alert: string){

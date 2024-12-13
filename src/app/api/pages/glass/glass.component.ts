@@ -62,7 +62,7 @@ export class GlassComponent implements OnDestroy{
   }
 
   constructor(){
-    this.handleGlass();
+    this.fecthListGlass();
   }
 
   ngOnDestroy(): void {
@@ -71,7 +71,7 @@ export class GlassComponent implements OnDestroy{
     this.#alertEffect.destroy();
   }
 
-  handleGlass(){
+  fecthListGlass(){
     this.#spinner.show();
     this.#apiService.getListGlass().subscribe(
       {
@@ -91,18 +91,18 @@ export class GlassComponent implements OnDestroy{
       this.firstTime = true;
       this.#alertService.setAlert("creado");
     }else{
+      this.#alertService.setAlert("");
       this.#alertService.setAlert("cambiado");
     }
   }
 
-  handleListDrinks(){
+  fetchListDrinks(){
     this.#spinner.show();
     if(this.selectedValue != ""){
       this.#apiService.getListDrinksByGlass(this.selectedValue).subscribe(
         {
           next: (response) => {
             this.#listDrinks.set(response.drinks);
-            if(this.#listDrinks().length > 0) this.#paginationService.reset();
             this.#paginationService.loadItems(this.#listDrinks());
             this.handleAlerts();
             this.#spinner.hide();
@@ -118,7 +118,13 @@ export class GlassComponent implements OnDestroy{
   getValueFromSelect(event: any){
     const selectElement = event.target as HTMLSelectElement; // Asegúrate de que el evento es del tipo correcto
     this.selectedValue = selectElement.value; 
-    this.handleListDrinks();
+    if(this.#listDrinks().length > 0) this.resetDrinks();
+    this.fetchListDrinks();
+  }
+
+  resetDrinks(){
+    this.#paginationService.reset();
+    this.#listDrinks.set([]);
   }
 
   checkAlertMessage(alert: string){

@@ -1,6 +1,6 @@
 
 <h2 class="text-2xl font-semibold w-fit mb-2">Instrucciones</h2>
-@if (accordionList.length>0) {
+@if (accordionList().length >0) {
   <div data-test="accordeon-div" class="flex flex-col gap-5">
     @for (accordion of accordionList(); track $index) {
       <div class="w-full max-w-5xl" id="accordion-collapse" data-accordion="collapse">

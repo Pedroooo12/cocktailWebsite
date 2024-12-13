@@ -63,7 +63,7 @@ export class RandomComponent implements OnDestroy{
     this.#alertService.reset();
   }
 
-  handleRandom(alertMessage: string){
+  fecthRandomDrink(alertMessage: string){
     this.#spinner.show();
     this.#apiService.getRandom().subscribe(
       {
@@ -93,7 +93,7 @@ export class RandomComponent implements OnDestroy{
     }
   }
 
-  deleteRandom(){
+  handleDeleteDrink(){
     this.#drink.set(undefined);
     this.#alertService.setAlert("eliminado");
   }

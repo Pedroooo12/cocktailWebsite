@@ -34,6 +34,11 @@ export const routes: Routes = [
         title: "Ingredientes",
         path: 'ingredientes',
         loadComponent: () => import('./api/pages/ingredient/ingredient.component').then(m => m.IngredientComponent)
+      },
+      {
+        title: "Nombre",
+        path: 'nombre',
+        loadComponent: () => import('./api/pages/name/name.component').then(m => m.NameComponent)
       }
     ]
   },

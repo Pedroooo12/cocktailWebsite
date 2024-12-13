@@ -1,7 +1,7 @@
 
 <div class="p-4 lg:px-10 lg:py-5 w-full lg:w-fit mx-auto rounded-lg border text-center">
   <h2 class="text-lg md:text-2xl font-bold">Ingredientes y Medidas</h2>
-  @if (ingredientList.length > 0) {
+  @if (ingredientList().length > 0) {
     <div data-test="ingredients-list" class="flex flex-col md:flex-row  md:justify-center gap-4 mt-5">
       @for (ingredient of ingredientList(); track $index) {
         <div class="flex gap-2 items-center">

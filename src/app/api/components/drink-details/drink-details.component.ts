@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Accordion } from '@interfaces/accordion';
 import { Drink } from '@interfaces/drink';
 import { Ingredient } from '@interfaces/ingredient';
