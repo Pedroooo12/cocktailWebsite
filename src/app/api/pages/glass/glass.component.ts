@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 import { AlertInfo } from '@interfaces/alertInfo';
 import { Glass } from '@interfaces/glass';
@@ -18,6 +18,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
     ListDrinksComponent,
     SpinnerComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './glass.component.html',
   styleUrl: './glass.component.css'
 })
@@ -28,12 +29,7 @@ export class GlassComponent implements OnDestroy{
   #paginationService = inject(PaginationService);
   #spinner = inject(NgxSpinnerService);
 
-  #alertMessage: string = ''
 
-  #alertEffect = effect(() => {
-      this.#alertMessage = this.#alertService.getAlert()();
-      this.checkAlertMessage(this.#alertMessage);
-  });
 
   #listGlass = signal<Glass[]>([]);
   listGlassComputed = computed(() => this.#listGlass())
@@ -47,17 +43,13 @@ export class GlassComponent implements OnDestroy{
 
 
   //alerts
-  arrivedDrinkAlert: boolean = false;
   arrivedDrinkMessage: AlertInfo = {
-    condition: this.arrivedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido generados',
+    message: 'Los cocktailes han sido generados',
     type: "correcto"
   }
 
-  changedDrinkAlert: boolean = false;
   changedDrinkMessage: AlertInfo = {
-    condition: this.changedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido cambiados',
+    message: 'Los cocktailes han sido cambiados',
     type: "cambiado"
   }
 
@@ -68,7 +60,6 @@ export class GlassComponent implements OnDestroy{
   ngOnDestroy(): void {
     this.#paginationService.reset();
     this.#alertService.reset();
-    this.#alertEffect.destroy();
   }
 
   fecthListGlass(){
@@ -89,10 +80,9 @@ export class GlassComponent implements OnDestroy{
   private handleAlerts(){
     if(!this.firstTime){
       this.firstTime = true;
-      this.#alertService.setAlert("creado");
+      this.#alertService.showAlertAndHide(this.arrivedDrinkMessage);
     }else{
-      this.#alertService.setAlert("");
-      this.#alertService.setAlert("cambiado");
+      this.#alertService.showAlertAndHide(this.changedDrinkMessage);
     }
   }
 
@@ -125,17 +115,6 @@ export class GlassComponent implements OnDestroy{
   resetDrinks(){
     this.#paginationService.reset();
     this.#listDrinks.set([]);
-  }
-
-  checkAlertMessage(alert: string){
-    switch (alert) {
-      case 'creado':
-        this.#alertService.showAlertAndHide(() => this.arrivedDrinkMessage.condition = !this.arrivedDrinkMessage.condition)
-        break;
-      case 'cambiado':
-        this.#alertService.showAlertAndHide(() => this.changedDrinkMessage.condition = !this.changedDrinkMessage.condition)
-        break;
-    }
   }
 
 }

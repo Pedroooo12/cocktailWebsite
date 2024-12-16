@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 import { AlcoholCategory } from '@interfaces/alcohol/alcoholCategory';
 import { AlertInfo } from '@interfaces/alertInfo';
@@ -18,6 +18,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
     ListDrinksComponent, 
     SpinnerComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './alcohol.component.html',
   styleUrl: './alcohol.component.css'
 })
@@ -34,28 +35,17 @@ export class AlcoholComponent implements OnDestroy {
 
   #listDrinks = signal<Alcohol[]>([]);
   listDrinksComputed = computed(() => this.#listDrinks())
-  
-  #alertMessage: string = '';
-
-  #alertEffect = effect(() => {
-    this.#alertMessage = this.#alertService.getAlert()();
-    this.checkAlertMessage(this.#alertMessage);
-  });
  
   //boolean
   firstTime: boolean = false;
 
-  arrivedDrinkAlert: boolean = false;
   arrivedDrinkMessage: AlertInfo = {
-    condition: this.arrivedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido generados',
+    message: 'Los cocktailes han sido generados',
     type: "correcto"
   }
 
-  changedDrinkAlert: boolean = false;
   changedDrinkMessage: AlertInfo = {
-    condition: this.changedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido cambiados',
+    message: 'Los cocktailes han sido cambiados',
     type: "cambiado"
   }
 
@@ -66,7 +56,6 @@ export class AlcoholComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.#paginationService.reset();
     this.#alertService.reset();
-    this.#alertEffect.destroy();
   }
 
   handleListCategories(){
@@ -99,17 +88,6 @@ export class AlcoholComponent implements OnDestroy {
     )
   }
 
-  checkAlertMessage(alert: string){
-    switch (alert) {
-      case 'creado':
-        this.#alertService.showAlertAndHide(() => this.arrivedDrinkMessage.condition = !this.arrivedDrinkMessage.condition)
-        break;
-      case 'cambiado':
-        this.#alertService.showAlertAndHide(() => this.changedDrinkMessage.condition = !this.changedDrinkMessage.condition)
-        break;
-    }
-  }
-
   actionButton(alcohol: string){
     this.#paginationService.reset();
     this.handleListDrinkByAlcohol(alcohol);
@@ -119,10 +97,9 @@ export class AlcoholComponent implements OnDestroy {
   private handleAlerts(){
     if(!this.firstTime){
       this.firstTime = true;
-      this.#alertService.setAlert("creado");
+      this.#alertService.showAlertAndHide(this.arrivedDrinkMessage)
     }else{
-      this.#alertService.setAlert("");
-      this.#alertService.setAlert("cambiado");
+      this.#alertService.showAlertAndHide(this.changedDrinkMessage)
     }
   }
 

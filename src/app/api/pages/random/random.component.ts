@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnDestroy, OnInit, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, OnInit, Signal, signal } from '@angular/core';
 import { AlertInfo } from '@interfaces/alertInfo';
 import { Drink } from '@interfaces/drink';
 import { AlertComponent } from '../../shared/alert/alert.component';
@@ -17,6 +17,7 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
     SpinnerComponent,
     NgxSpinnerComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   templateUrl: './random.component.html',
   styleUrl: './random.component.css'
@@ -28,38 +29,27 @@ export class RandomComponent implements OnDestroy{
   #spinner = inject(NgxSpinnerService);
 
   #drink = signal<Drink | undefined>(undefined);
-  drinkComputed = computed(() => this.#drink())
+  drinkComputed = computed(() => this.#drink());
 
-  #alertMessage: string = '';
+  firstTime: boolean = false;
 
-  #alertEffect = effect(() => {
-    this.#alertMessage = this.#alertService.getAlert()();
-    this.checkAlertMessage(this.#alertMessage);
-  });
-
-  arrivedDrinkAlert: boolean = false;
   arrivedDrinkMessage: AlertInfo = {
-    condition: this.arrivedDrinkAlert,
-    mainMessage: 'El cocktail ha sido generado',
+    message: 'El cocktail ha sido generado',
     type: "correcto"
   }
 
-  changedDrinkAlert: boolean = false;
+
   changedDrinkMessage: AlertInfo = {
-    condition: this.changedDrinkAlert,
-    mainMessage: 'El cocktail ha sido cambiado',
+    message: 'El cocktail ha sido cambiado',
     type: "cambiado"
   }
 
-  deletedDrinkAlert: boolean = false;
   deletedDrinkMessage: AlertInfo = {
-    condition: this.deletedDrinkAlert,
-    mainMessage: 'El cocktail ha sido eliminado',
+    message: 'El cocktail ha sido eliminado',
     type: "eliminado"
   }
 
   ngOnDestroy(): void {
-    this.#alertEffect.destroy();
     this.#alertService.reset();
   }
 
@@ -69,7 +59,7 @@ export class RandomComponent implements OnDestroy{
       {
         next: (response) => {
           this.#drink.set(response.drinks[0]);
-          this.#alertService.setAlert(alertMessage);
+          this.handleAlerts();
           this.#spinner.hide();
         },
         error: (value) => {
@@ -79,22 +69,17 @@ export class RandomComponent implements OnDestroy{
     )
   }
 
-  checkAlertMessage(alert: string){
-    switch (alert) {
-      case 'aleatorio':
-        this.#alertService.showAlertAndHide(() => this.arrivedDrinkMessage.condition = !this.arrivedDrinkMessage.condition)
-        break;
-      case 'cambiado':
-        this.#alertService.showAlertAndHide(() => this.changedDrinkMessage.condition = !this.changedDrinkMessage.condition)
-        break;
-      case 'eliminado':
-        this.#alertService.showAlertAndHide(() => this.deletedDrinkMessage.condition = !this.deletedDrinkMessage.condition)
-        break;
+  private handleAlerts(){
+    if(!this.firstTime){
+      this.firstTime = true;
+      this.#alertService.showAlertAndHide(this.arrivedDrinkMessage);
+    }else{
+      this.#alertService.showAlertAndHide(this.changedDrinkMessage);
     }
   }
 
   handleDeleteDrink(){
     this.#drink.set(undefined);
-    this.#alertService.setAlert("eliminado");
+    this.#alertService.showAlertAndHide(this.deletedDrinkMessage);
   }
 }

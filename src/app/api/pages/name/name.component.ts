@@ -1,4 +1,4 @@
-import { Component, computed, effect, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, HostListener, inject, signal } from '@angular/core';
 import { AlertInfo } from '@interfaces/alertInfo';
 import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
 import { AlertService } from '../../services/alert.service';
@@ -22,6 +22,7 @@ import { AlcoholResponse } from '@interfaces/alcohol/alcoholResponse';
     SearchComponent,
     ListDrinksComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './name.component.html',
   styleUrl: './name.component.css',
 })
@@ -33,12 +34,6 @@ export class NameComponent {
   #idService = inject(IdService);
   #router = inject(Router);
 
-  #alertMessage: string = '';
-
-  #alertEffect = effect(() => {
-    this.#alertMessage = this.#alertService.getAlert()();
-    this.checkAlertMessage(this.#alertMessage);
-  });
 
   #listDrinks = signal<Alcohol[]>([]);
   listDrinksComputed = computed(() => this.#listDrinks());
@@ -47,15 +42,15 @@ export class NameComponent {
 
   arrivedDrinkAlert: boolean = false;
   arrivedDrinkMessage: AlertInfo = {
-    condition: this.arrivedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido generados',
+
+    message: 'Los cocktailes han sido generados',
     type: 'correcto',
   };
 
   changedDrinkAlert: boolean = false;
   changedDrinkMessage: AlertInfo = {
-    condition: this.changedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido cambiados',
+
+    message: 'Los cocktailes han sido cambiados',
     type: 'cambiado',
   };
 
@@ -69,28 +64,14 @@ export class NameComponent {
   ngOnDestroy(): void {
     this.#paginationService.reset();
     this.#alertService.reset();
-    this.#alertEffect.destroy();
-  }
-
-  checkAlertMessage(alert: string){
-    switch (alert) {
-      case 'creado':
-        this.#alertService.showAlertAndHide(() => this.arrivedDrinkMessage.condition = !this.arrivedDrinkMessage.condition)
-        break;
-      case 'cambiado':
-        this.#alertService.showAlertAndHide(() => this.changedDrinkMessage.condition = !this.changedDrinkMessage.condition)
-        break;
-    }
   }
 
   private handleAlerts(){
     if(!this.firstTime){
       this.firstTime = true;
-      this.#alertService.reset();
-      this.#alertService.setAlert("creado");
+      this.#alertService.showAlertAndHide(this.arrivedDrinkMessage);
     }else{
-      this.#alertService.reset();
-      this.#alertService.setAlert("cambiado");
+      this.#alertService.showAlertAndHide(this.changedDrinkMessage);
     }
   }
 

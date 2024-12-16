@@ -1,9 +1,11 @@
-import { Component, input, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { Accordion } from '@interfaces/accordion';
 
 @Component({
   selector: 'app-accordion',
   imports: [],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './accordion.component.html',
   styleUrl: './accordion.component.css'
 })

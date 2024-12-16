@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 import { AlertInfo } from '@interfaces/alertInfo';
 import { Glass } from '@interfaces/glass';
@@ -19,6 +19,7 @@ import { ListDrinksComponent } from '../../shared/list-drinks/list-drinks.compon
     AlertComponent,
     ListDrinksComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './ingredient.component.html',
   styleUrl: './ingredient.component.css',
 })
@@ -27,13 +28,6 @@ export class IngredientComponent implements OnDestroy{
   #apiService = inject(ApiService);
   #paginationService = inject(PaginationService);
   #spinner = inject(NgxSpinnerService);
-
-  #alertMessage: string = '';
-
-  #alertEffect = effect(() => {
-    this.#alertMessage = this.#alertService.getAlert()();
-    this.checkAlertMessage(this.#alertMessage);
-  });
 
   #listIngredients = signal<IngredientCategory[]>([]);
   listIngredientsComputed = computed(() => this.#listIngredients());
@@ -46,17 +40,13 @@ export class IngredientComponent implements OnDestroy{
   selectedValue: string = '';
 
   //alerts
-  arrivedDrinkAlert: boolean = false;
   arrivedDrinkMessage: AlertInfo = {
-    condition: this.arrivedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido generados',
+    message: 'Los cocktailes han sido generados',
     type: 'correcto',
   };
 
-  changedDrinkAlert: boolean = false;
   changedDrinkMessage: AlertInfo = {
-    condition: this.changedDrinkAlert,
-    mainMessage: 'Los cocktailes han sido cambiados',
+    message: 'Los cocktailes han sido cambiados',
     type: 'cambiado',
   };
 
@@ -68,7 +58,6 @@ export class IngredientComponent implements OnDestroy{
   ngOnDestroy(): void {
     this.#paginationService.reset();
     this.#alertService.reset();
-    this.#alertEffect.destroy();
   }
 
   fecthListIngredients(){
@@ -107,10 +96,9 @@ export class IngredientComponent implements OnDestroy{
   private handleAlerts(){
     if(!this.firstTime){
       this.firstTime = true;
-      this.#alertService.setAlert("creado");
+      this.#alertService.showAlertAndHide(this.arrivedDrinkMessage);
     }else{
-      this.#alertService.setAlert("");
-      this.#alertService.setAlert("cambiado");
+      this.#alertService.showAlertAndHide(this.changedDrinkMessage);
     }
   }
 
@@ -124,17 +112,6 @@ export class IngredientComponent implements OnDestroy{
   resetDrinks(){
     this.#paginationService.reset();
     this.#listDrinks.set([]);
-  }
-
-  checkAlertMessage(alert: string){
-    switch (alert) {
-      case 'creado':
-        this.#alertService.showAlertAndHide(() => this.arrivedDrinkMessage.condition = !this.arrivedDrinkMessage.condition)
-        break;
-      case 'cambiado':
-        this.#alertService.showAlertAndHide(() => this.changedDrinkMessage.condition = !this.changedDrinkMessage.condition)
-        break;
-    }
   }
 
 }

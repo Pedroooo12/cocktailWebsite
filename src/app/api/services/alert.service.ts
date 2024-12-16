@@ -1,33 +1,37 @@
-import { Injectable, signal } from '@angular/core';
+import { ChangeDetectorRef, inject, Injectable, signal } from '@angular/core';
+import { AlertInfo } from '@interfaces/alertInfo';
+import { AlertSignal } from '@interfaces/alertSignal';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
 
-  // Definimos una señal para manejar la información
-  #information = signal<string>(''); // Inicializamos con una cadena vacía
+  #alert = signal<AlertSignal>({ message: '',type: '', visible: false });
 
-  constructor() { }
 
   // Método para obtener la señal
   getAlert() {
-    return this.#information;
+    return this.#alert;
   }
 
   // Método para establecer la alerta
-  setAlert(information: string) {
-    this.#information.set(information);
+  setAlert(alert: AlertInfo) {
+    this.#alert.set({ message: alert.message,type: alert.type, visible: true });
   }
 
-  reset(){
-    this.#information.set('');
+  // Método para restablecer la alerta
+  reset() {
+    this.#alert.set({ message: '', type: '', visible: false });
   }
 
-  showAlertAndHide(setAlert: () => void): void {
-    setAlert(); 
+  // Método para mostrar la alerta y ocultarla después de un tiempo
+  showAlertAndHide(alert: AlertInfo): void {
+    console.log("entra");
+    this.setAlert(alert);
     setTimeout(() => {
-      setAlert();
+      this.reset();
+      console.log(this.#alert())
     }, 1500);
   }
 }

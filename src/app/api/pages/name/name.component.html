@@ -3,8 +3,8 @@
   bdColor="rgba(0,0,0,0)">
   <app-spinner></app-spinner>
   </ngx-spinner>
-  <app-alert [alertInfo]="arrivedDrinkMessage"></app-alert>
-  <app-alert [alertInfo]="changedDrinkMessage"></app-alert>
+  <app-alert></app-alert>
+  <app-alert></app-alert>
   <app-search (passValue)="fecthListDrinks($event)" [noExistDrink]="noExistDrink"></app-search>
   <app-list-drinks [listDrinks]="listDrinksComputed()"></app-list-drinks>
 </section>

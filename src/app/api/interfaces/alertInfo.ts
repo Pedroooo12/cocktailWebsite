@@ -1,5 +1,4 @@
 export interface AlertInfo {
-  condition: boolean,
-  mainMessage: string,
+  message: string,
   type: string
 }

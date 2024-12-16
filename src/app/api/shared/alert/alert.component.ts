@@ -1,20 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, Input } from '@angular/core';
-import { AlertInfo } from '@interfaces/alertInfo';
+import { ChangeDetectionStrategy, Component, inject,} from '@angular/core';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-alert',
   imports: [CommonModule],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.css'
 })
 export class AlertComponent {
 
-  alertInfo = input.required<AlertInfo>();
+  alertService = inject(AlertService);
+
+  constructor(){
+  }
+
 
   getClass(){
-    switch (this.alertInfo().type) {
+    switch (this.alertService.getAlert()().type) {
       case 'eliminado':
         return 'border-red-700  text-red-100 bg-red-600 hover:bg-red-800';
       case 'correcto':

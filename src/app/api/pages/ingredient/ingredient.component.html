@@ -4,8 +4,8 @@
     <app-spinner></app-spinner>
 </ngx-spinner>
 
-<app-alert data-test="alert-drink-arrived-ingredient" [alertInfo]="arrivedDrinkMessage"></app-alert>
-<app-alert data-test="alert-drink-changed-ingredient" [alertInfo]="changedDrinkMessage"></app-alert>
+<app-alert data-test="alert-drink-arrived-ingredient"></app-alert>
+<app-alert data-test="alert-drink-changed-ingredient"></app-alert>
 
 @if (listIngredientsComputed().length > 0) {
   <select data-test="select-ingredient" (change)="getValueFromSelect($event)" class="md:w-1/2 mx-auto py-3 px-4 pe-9 block w-full border border-custom-violet rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none">

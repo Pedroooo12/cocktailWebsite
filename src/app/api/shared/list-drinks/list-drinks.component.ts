@@ -1,4 +1,4 @@
-import { Component, computed, effect, HostListener, inject, input, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, HostListener, inject, input, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Alcohol } from '@interfaces/alcohol/alcohol';
 import { PaginationService } from '../../services/pagination.service';
@@ -9,6 +9,8 @@ import { IdService } from '../../services/id.service';
 @Component({
   selector: 'app-list-drinks',
   imports: [BtnTopComponent, DrinkItemComponent],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './list-drinks.component.html',
   styleUrl: './list-drinks.component.css'
 })

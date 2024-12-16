@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { Drink } from '@interfaces/drink';
 import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../../services/api.service';
@@ -17,6 +17,7 @@ import { IdService } from '../../services/id.service';
     SpinnerComponent,
     DrinkDetailsComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './drink.component.html',
   styleUrl: './drink.component.css'
 })
@@ -29,14 +30,21 @@ export class DrinkComponent {
   #router = inject(Router);
 
   drink!: Drink;
-  arrivedDrink: boolean = false;
+  arrivedDrink = signal<boolean>(false);
   id: number = -1;
 
   constructor(){
     this.#spinner.show();
     effect(() => {
       this.id = this.#idService.getId();
-      (this.id === -1) ? this.back() : this.handleDrink(this.id);
+      if(this.id === -1){
+        this.back()
+      }else{
+        console.log(this.id);
+        this.handleDrink(this.id);
+        console.log("entra");
+      } 
+      
     });
   }
 
@@ -47,7 +55,8 @@ export class DrinkComponent {
         next: (response) => {
           this.drink = response.drinks[0];
           this.#titleService.setTitle(this.drink.strDrink);
-          this.arrivedDrink = true;
+          this.arrivedDrink.set(true)
+          console.log(this.arrivedDrink);
           this.#spinner.hide();
         },
         error: (error) => {

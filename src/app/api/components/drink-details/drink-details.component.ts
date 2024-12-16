@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Accordion } from '@interfaces/accordion';
 import { Drink } from '@interfaces/drink';
 import { Ingredient } from '@interfaces/ingredient';
@@ -10,6 +10,8 @@ import { OtherInformationComponent } from './other-information/other-information
 @Component({
   selector: 'app-drink-details',
   imports: [IngredientsComponent, AccordionComponent, OtherInformationComponent],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './drink-details.component.html',
   styleUrl: './drink-details.component.css'
 })

@@ -1,9 +1,11 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-search',
   imports: [],
+  standalone: true,
+   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })

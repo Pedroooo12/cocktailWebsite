@@ -6,7 +6,7 @@
   
   <app-btn-back></app-btn-back>
 
-  @defer(when this.arrivedDrink) {
+  @if(this.arrivedDrink()) {
     <app-drink-details [noTitle]="true" [drink]="drink"></app-drink-details>
   }
 

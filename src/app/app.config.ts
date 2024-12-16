@@ -1,4 +1,10 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection, isDevMode } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+  isDevMode,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -9,19 +15,19 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-     provideRouter(
+    provideExperimentalZonelessChangeDetection(),
+    provideRouter(
       routes,
       withViewTransitions({
-        skipInitialTransition: true
-      }),
-     ),
-     importProvidersFrom(NgxSpinnerModule.forRoot(/*config*/)),
+        skipInitialTransition: true,
+      })
+    ),
+    importProvidersFrom(NgxSpinnerModule.forRoot(/*config*/)),
     provideAnimations(),
-     provideHttpClient(), 
-     provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          }),
+    provideHttpClient(),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };
