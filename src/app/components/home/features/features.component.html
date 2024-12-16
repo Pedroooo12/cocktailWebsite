@@ -5,10 +5,16 @@
           <p class="text-custom-black sm:text-xl">Aquí tienes la explicación de cada una de las páginas a las que puedes acceder. <br> ¡Disfruta de tu cocktail!</p>
       </div>
       <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
-        @for (card of listCards; track $index) {
-          <div>
-            <app-card [cardFeature]="card"></app-card>
-          </div>
+        @for (card of listCards; track $index; let last = $last) {
+          @if (!last) {
+            <div>
+              <app-card [cardFeature]="card"></app-card>
+            </div>
+          } @else {
+            <div>
+              <app-card [cardFeature]="card"></app-card>
+            </div>
+          }
         }
       </div>
   </div>
