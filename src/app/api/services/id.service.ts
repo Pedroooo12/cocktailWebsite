@@ -12,7 +12,6 @@ export class IdService {
   
   constructor() { }
   getId(){
-    //añadimos asObservable para que no se pueda modificar desde el get
     return	this.#id();
   }
 
