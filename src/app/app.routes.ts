@@ -9,7 +9,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadComponent: () => import('./api/api.component'),
     children: [
       {
         title: 'Aleatorio',
